@@ -33,6 +33,16 @@ class AppDrawer extends StatelessWidget {
               );
             },
           ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.payment),
+            title: const Text('Gerenciar Produtos'),
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed(
+                AppRoutes.products,
+              );
+            },
+          ),
         ],
       ),
     );
