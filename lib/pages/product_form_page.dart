@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop/models/product_list.dart';
 
 class ProductFormPage extends StatefulWidget {
   const ProductFormPage({super.key});
@@ -11,7 +13,11 @@ class _ProductFormPageState extends State<ProductFormPage> {
   final _priceFocus = FocusNode();
   final _descriptionFocus = FocusNode();
   final _imageUrlFocus = FocusNode();
+
   final _imageUrlController = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
+  final _formData = <String, Object>{};
 
   @override
   void initState() {
@@ -30,6 +36,18 @@ class _ProductFormPageState extends State<ProductFormPage> {
 
   void updateImage() {
     setState(() {});
+  }
+
+  void _submitForm() {
+    final isValid = _formKey.currentState?.validate() ?? false;
+
+    if (!isValid) return;
+
+    _formKey.currentState?.save();
+
+    Provider.of<ProductList>(context, listen: false).saveProduct(_formData);
+
+    Navigator.of(context).pop();
   }
 
   @override
@@ -87,9 +105,13 @@ class _ProductFormPageState extends State<ProductFormPage> {
                   alignment: Alignment.center,
                   child: _imageUrlController.text.isEmpty
                       ? const Text('Informe a Url')
-                      : FittedBox(
-                          fit: BoxFit.cover,
-                          child: Image.network(_imageUrlController.text),
+                      : SizedBox(
+                          width: 100,
+                          height: 100,
+                          child: FittedBox(
+                            fit: BoxFit.cover,
+                            child: Image.network(_imageUrlController.text),
+                          ),
                         ),
                 ),
               ],
