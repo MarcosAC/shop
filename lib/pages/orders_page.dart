@@ -18,9 +18,8 @@ class OrdersPage extends StatelessWidget {
       drawer: const AppDrawer(),
       body: ListView.builder(
         itemCount: orders.itemsCount,
-        itemBuilder: (context, index) => OrderWidget(
-          order: orders.items[index],
-        ),
+        itemBuilder: (context, index) =>
+            OrderWidget(order: orders.items[index]),
       ),
     );
   }

@@ -17,25 +17,21 @@ class ProductsPage extends StatelessWidget {
         title: const Text('Gerenciar Produtos'),
         actions: [
           IconButton(
-            onPressed: () {
-              //Navigator.of(context).pushNamed(AppRoutes.productForm);
-            },
-            icon: const Icon(Icons.add),
-          ),
+              onPressed: () {
+                Navigator.of(context).pushNamed(AppRoutes.productForm);
+              },
+              icon: const Icon(Icons.add))
         ],
       ),
       drawer: const AppDrawer(),
       body: Padding(
-        padding: const EdgeInsets.all(8),
-        child: ListView.builder(
-            itemCount: products.itemsCount,
-            itemBuilder: (context, index) => Column(
-                  children: [
+          padding: const EdgeInsets.all(8),
+          child: ListView.builder(
+              itemCount: products.itemsCount,
+              itemBuilder: (context, index) => Column(children: [
                     ProductItem(products.items[index]),
                     const Divider(),
-                  ],
-                )),
-      ),
+                  ]))),
     );
   }
 }

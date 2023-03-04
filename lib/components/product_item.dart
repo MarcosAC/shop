@@ -25,7 +25,7 @@ class ProductItem extends StatelessWidget {
             IconButton(
               onPressed: () {},
               icon: const Icon(Icons.delete),
-              color: Theme.of(context).errorColor,
+              color: Theme.of(context).colorScheme.primary,
             ),
           ],
         ),

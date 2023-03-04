@@ -1,8 +1,14 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:shop/data/dummy_data.dart';
 import 'package:shop/models/product.dart';
+import 'package:http/http.dart' as http;
 
 class ProductList with ChangeNotifier {
+  final _baseUrl = 'https://shop-74427-default-rtdb.firebaseio.com/';
+
   final List<Product> _items = dummyProducts;
 
   List<Product> get items => [..._items];
@@ -13,8 +19,48 @@ class ProductList with ChangeNotifier {
     return _items.length;
   }
 
+  void saveProduct(Map<String, Object> data) {
+    bool hasId = data['id'] != null;
+
+    final product = Product(
+      id: hasId ? data['id'] as String : Random().nextDouble().toString(),
+      name: data['name'] as String,
+      description: data['description'] as String,
+      imageUrl: data['imageUrl'] as String,
+      price: data['price'] as double,
+    );
+
+    if (hasId) {
+      updateProduct(product);
+    } else {
+      addProduct(product);
+    }
+  }
+
   void addProduct(Product product) {
+    http.post(
+      Uri.parse('$_baseUrl/products.json'),
+      body: jsonEncode(
+        {
+          "name": product.name,
+          "description": product.description,
+          "price": product.price,
+          "imageUrl": product.imageUrl,
+          "isFavorite": product.isFavorite,
+        },
+      ),
+    );
+
     _items.add(product);
     notifyListeners();
+  }
+
+  void updateProduct(Product product) {
+    int index = _items.indexWhere((p) => p.id == product.id);
+
+    if (index >= 0) {
+      _items[index] = product;
+      notifyListeners();
+    }
   }
 }
